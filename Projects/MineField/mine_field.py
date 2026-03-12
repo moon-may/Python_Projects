@@ -1,6 +1,7 @@
 import random
 
-def create_field(cols, rows, mines):
+# Скрытое от игрока поле
+def create_hidden_field(cols, rows, mines):
     field = []
 
     # Задать поле
@@ -41,7 +42,15 @@ def create_field(cols, rows, mines):
     return field
 
 
-new_field = create_field(9, 9, 10)
+# Поле игрока
+def create_user_field(cols, rows):
+    user_field = []
 
-for row in new_field:
-    print(row)
+    for row in range(rows):
+        row = []
+        for col in range(cols):
+            row.append('#')
+        user_field.append(row)
+
+
+
