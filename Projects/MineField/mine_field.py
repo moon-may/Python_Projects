@@ -12,6 +12,24 @@ class Game:
         self.player_field = [['#'] * self.cols for _ in range(self.rows)]
         self.flags = [[False for _ in range(cols)] for _ in range(rows)]
 
+    # Поиск всех соседей клетки
+    def neighbors(self, row, col):
+        neighbors_list = []
+        # определение соседей
+        for i in range(-1, 2):
+                # пропустить центр
+            for j in range(-1, 2):
+                if i == 0 and j == 0:
+                    continue
+                # соседи
+                nr = row + i
+                nc = col + j
+                # проверка границ
+                if 0 <= nr < self.rows and 0 <= nc < self.cols:
+                    neighbors_list.append((nr, nc))         
+        return neighbors_list
+
+
     # Скрытое от игрока поле
     def create_hidden_field(self):
         # поле, заполненное нулями
@@ -30,20 +48,9 @@ class Game:
                 mines_placed += 1
 
                 # Разместить числа
-                # определение соседей
-                for i in range(-1, 2):
-                    for j in range(-1, 2):
-                        # пропустить центр
-                        if i == 0 and j == 0:
-                            continue
-                        # соседи
-                        nr = r + i
-                        nc = c + j
-                        # проверка границ
-                        if 0 <= nr < self.rows and 0 <= nc < self.cols:
-                            # если клетка - не мина
-                            if field[nr][nc] != -1:
-                                field[nr][nc] += 1
+                for nr, nc in self.neighbors(r, c):
+                    if field[nr][nc] != -1:
+                        field[nr][nc] += 1
 
         return field
     
@@ -71,15 +78,11 @@ class Game:
         self.player_field[row][col] = str(self.hidden_field[row][col])
 
         if cell_value == 0:
-            for i in range(-1, 2):
-                for j in range(-1, 2):
-                    if i == 0 and j == 0:
-                        continue
-                    nr = row + i
-                    nc = col + j
-                    if 0 <= nr < self.rows and 0 <= nc < self.cols:
-                        if self.player_field[nr][nc] == '#' and not self.flags[nr][nc]:
-                            self.open_cell(nr, nc)
+            for nr, nc in self.neighbors(row, col):
+                if self.player_field[nr][nc] == '#' and not(self.flags[nr][nc]): 
+                    self.open_cell(nr, nc)
+        
+        return 'OK'
 
 
     # Смена флага
