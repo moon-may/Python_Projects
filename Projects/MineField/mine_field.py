@@ -54,16 +54,20 @@ class Game:
 
         return field
     
+
+    # Проверка победы
+    # Если не осталось # кроме мин, игра окончена
+    def check_win(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.hidden_field[row][col] != -1 and self.player_field[row][col] == '#':
+                    return False
+                else:
+                    return True
+    
+    
     # Открыть клетку
     def open_cell(self, row, col):
-        '''
-        проверь границы
-        проверь, стоит ли флаг, если стоит - не открывай, попроси другие координаты или сменить флаг
-        проверь, открыта ли клетка. если открыта - выведи запрос на другие координаты
-        если закрыта и мина - закончить игру, показать поле
-        если закрыта и цифра - выведи цифру
-        если закрыта и 0 - самовызов на соседние клетки
-        '''
         if not(0 <= row < self.rows and 0 <= col < self.cols):
             return 'INVALID_COORDS'     # координаты не существуют
         elif self.flags[row][col]:
@@ -86,10 +90,10 @@ class Game:
 
 
     # Смена флага
-    def toggle_flag(self):
-        pass
-
-
-    # Состояние игры
-    def game_status(self):
-        pass
+    def toggle_flag(self, row, col):
+        if 0 <= row < self.rows and 0 <= col < self.cols:
+            if self.player_field[row][col] == '#':
+                if self.flags[row][col]:
+                    self.flags[row][col] = False
+                else:  
+                    self.flags[row][col] = True
