@@ -9,8 +9,8 @@ class Game:
         self.game_over = False
 
         self.hidden_field = self.create_hidden_field()
-        self.player_field = [['#'] * self.cols for _ in range(self.rows)]
-        self.flags = [[False for _ in range(cols)] for _ in range(rows)]
+        self.player_field = [[False for _ in range(self.cols)] for _ in range(self.rows)]
+        self.flags = [[False for _ in range(self.cols)] for _ in range(self.rows)]
 
     # Поиск всех соседей клетки
     def neighbors(self, row, col):
@@ -60,10 +60,9 @@ class Game:
     def check_win(self):
         for row in range(self.rows):
             for col in range(self.cols):
-                if self.hidden_field[row][col] != -1 and self.player_field[row][col] == '#':
+                if self.hidden_field[row][col] != -1 and not self.player_field[row][col]:
                     return False
-                else:
-                    return True
+        return True
     
     
     # Открыть клетку
@@ -72,27 +71,30 @@ class Game:
             return 'INVALID_COORDS'     # координаты не существуют
         elif self.flags[row][col]:
             return 'HAS_FLAG'           # уже стоит флаг
-        elif self.player_field[row][col] != '#':
+        elif self.player_field[row][col]:
             return 'ALREADY_OPEN'       # уже открыта клетка
         elif self.hidden_field[row][col] == -1:
             self.game_over = True       
             return 'MINE'               # в клетке мина
         
-        cell_value = self.hidden_field[row][col]
-        self.player_field[row][col] = str(self.hidden_field[row][col])
+        cell_value = self.hidden_field[row][col] # значение в клетке
+        self.player_field[row][col] = True # клетка открыта
 
+        # Если 0, нужно открыть все клетки до тех, где есть цифры
         if cell_value == 0:
             for nr, nc in self.neighbors(row, col):
-                if self.player_field[nr][nc] == '#' and not(self.flags[nr][nc]): 
+                if not(self.player_field[nr][nc]) and not(self.flags[nr][nc]): 
                     self.open_cell(nr, nc)
         
+        if self.check_win():
+            self.game_over = True
         return 'OK'
 
 
     # Смена флага
     def toggle_flag(self, row, col):
         if 0 <= row < self.rows and 0 <= col < self.cols:
-            if self.player_field[row][col] == '#':
+            if not (self.player_field[row][col]):
                 if self.flags[row][col]:
                     self.flags[row][col] = False
                 else:  
