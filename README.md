@@ -1,10 +1,8 @@
-# Python-Learning
-Учебные проекты, задачки, заметки по Python
+# Python_Projects
+Репозиторий с моими учебными проектами на Python.
 
-## Структура
+## Проекты
+- [Калькулятор](https://github.com/moon-may/Python_Projects/tree/main/Calculator) — графическое приложение с интерфейсом на Tkinter
+- [Сапёр](https://github.com/moon-may/Python_Projects/tree/main/MineFIeld) — консольная версия классической игры с рекурсивным открытием клеток
 
-### [Projects](https://github.com/moon-may/Python-Learning/tree/main/Projects) — учебные проекты
-Рабочие мини-приложения для отработки технологий. Содержит проекты на разных стадиях реализации.
 
-### [Exercises](https://github.com/moon-may/Python-Learning/tree/main/Exercises) — задачи и упражнения
-Решение алгоритмических задач и практических упражнений. 
